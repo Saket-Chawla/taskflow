@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { motion } from "framer-motion";
 
 import Header from "./components/layout/Header";
 import Dashboard from "./components/layout/Dashboard";
@@ -13,7 +14,6 @@ import ProgressBar from "./components/progress/ProgressBar";
 import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
-  // Form State
   const [taskData, setTaskData] = useState({
     text: "",
     priority: "Medium",
@@ -21,15 +21,13 @@ function App() {
     dueDate: "",
   });
 
-  // Search
   const [search, setSearch] = useState("");
 
-  // Tasks
   const [tasks, setTasks] = useLocalStorage("tasks", []);
 
-  // -----------------------------
+  // -----------------------
   // Add Task
-  // -----------------------------
+  // -----------------------
   const addTask = () => {
     if (taskData.text.trim() === "") return;
 
@@ -53,18 +51,18 @@ function App() {
     });
   };
 
-  // -----------------------------
+  // -----------------------
   // Delete Task
-  // -----------------------------
+  // -----------------------
   const deleteTask = (id) => {
     setTasks((prev) =>
       prev.filter((task) => task.id !== id)
     );
   };
 
-  // -----------------------------
+  // -----------------------
   // Toggle Complete
-  // -----------------------------
+  // -----------------------
   const toggleComplete = (id) => {
     setTasks((prev) =>
       prev.map((task) =>
@@ -78,9 +76,9 @@ function App() {
     );
   };
 
-  // -----------------------------
+  // -----------------------
   // Edit Task
-  // -----------------------------
+  // -----------------------
   const editTask = (id, updatedTask) => {
     setTasks((prev) =>
       prev.map((task) =>
@@ -91,16 +89,16 @@ function App() {
     );
   };
 
-  // -----------------------------
+  // -----------------------
   // Search
-  // -----------------------------
+  // -----------------------
   const filteredTasks = tasks.filter((task) =>
     task.text.toLowerCase().includes(search.toLowerCase())
   );
 
-  // -----------------------------
+  // -----------------------
   // Dashboard Stats
-  // -----------------------------
+  // -----------------------
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(
     (task) => task.completed
@@ -113,8 +111,13 @@ function App() {
       : Math.round((completedTasks / totalTasks) * 100);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <div className="max-w-6xl mx-auto px-6 py-10">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen bg-background text-foreground transition-colors duration-300"
+    >
+      <div className="mx-auto max-w-6xl px-6 py-10">
 
         <Header />
 
@@ -145,7 +148,7 @@ function App() {
         />
 
       </div>
-    </div>
+    </motion.main>
   );
 }
 

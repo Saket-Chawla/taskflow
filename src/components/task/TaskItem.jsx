@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { format } from "date-fns";
 
 import {
@@ -45,126 +46,134 @@ function TaskItem({
   };
 
   return (
-    <Card
-      className={`transition-all duration-300 hover:shadow-xl ${
-        item.completed ? "opacity-70" : ""
-      }`}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{
+        y: -4,
+        scale: 1.01,
+      }}
     >
-      <CardContent className="space-y-5 p-6">
+      <Card
+        className={`transition-all duration-300 hover:shadow-xl ${
+          item.completed ? "opacity-70" : ""
+        }`}
+      >
+        <CardContent className="space-y-5 p-6">
 
-        {/* Title */}
-        <div className="flex items-start justify-between gap-4">
+          {/* Title */}
+          <div className="flex items-start justify-between gap-4">
 
-          {isEditing ? (
-            <Input
-              value={editedText}
-              onChange={(e) =>
-                setEditedText(e.target.value)
-              }
-            />
-          ) : (
-            <div>
-              <h2
-                className={`text-xl font-semibold ${
-                  item.completed
-                    ? "line-through text-muted-foreground"
-                    : ""
-                }`}
-              >
-                {item.text}
-              </h2>
-            </div>
-          )}
+            {isEditing ? (
+              <Input
+                value={editedText}
+                onChange={(e) =>
+                  setEditedText(e.target.value)
+                }
+              />
+            ) : (
+              <div>
+                <h2
+                  className={`text-xl font-semibold ${
+                    item.completed
+                      ? "line-through text-muted-foreground"
+                      : ""
+                  }`}
+                >
+                  {item.text}
+                </h2>
+              </div>
+            )}
 
-        </div>
+          </div>
 
-        {/* Badges */}
+          {/* Badges */}
 
-        <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3">
 
-          <Badge variant={priorityColor[item.priority]}>
-            <Flag size={14} className="mr-1" />
-            {item.priority}
-          </Badge>
-
-          <Badge variant="outline">
-            <Folder size={14} className="mr-1" />
-            {item.category}
-          </Badge>
-
-          {item.dueDate && (
-            <Badge variant="secondary">
-              <Calendar size={14} className="mr-1" />
-              {format(
-                new Date(item.dueDate),
-                "MMM dd, yyyy"
-              )}
+            <Badge variant={priorityColor[item.priority]}>
+              <Flag size={14} className="mr-1" />
+              {item.priority}
             </Badge>
-          )}
 
-        </div>
+            <Badge variant="outline">
+              <Folder size={14} className="mr-1" />
+              {item.category}
+            </Badge>
 
-        {/* Buttons */}
+            {item.dueDate && (
+              <Badge variant="secondary">
+                <Calendar size={14} className="mr-1" />
+                {format(
+                  new Date(item.dueDate),
+                  "MMM dd, yyyy"
+                )}
+              </Badge>
+            )}
 
-        <div className="flex flex-wrap gap-3">
+          </div>
 
-          <Button
-            variant={
-              item.completed
-                ? "secondary"
-                : "default"
-            }
-            onClick={() =>
-              toggleComplete(item.id)
-            }
-          >
-            <CheckCircle2
-              size={16}
-              className="mr-2"
-            />
-            {item.completed
-              ? "Completed"
-              : "Complete"}
-          </Button>
+          {/* Buttons */}
 
-          {isEditing ? (
+          <div className="flex flex-wrap gap-3">
+
             <Button
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
+              variant={
+                item.completed
+                  ? "secondary"
+                  : "default"
+              }
               onClick={() =>
-                setIsEditing(true)
+                toggleComplete(item.id)
               }
             >
-              <Pencil
+              <CheckCircle2
                 size={16}
                 className="mr-2"
               />
-              Edit
+              {item.completed
+                ? "Completed"
+                : "Complete"}
             </Button>
-          )}
 
-          <Button
-            variant="destructive"
-            onClick={() =>
-              deleteTask(item.id)
-            }
-          >
-            <Trash2
-              size={16}
-              className="mr-2"
-            />
-            Delete
-          </Button>
+            {isEditing ? (
+              <Button onClick={handleSave}>
+                Save
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() =>
+                  setIsEditing(true)
+                }
+              >
+                <Pencil
+                  size={16}
+                  className="mr-2"
+                />
+                Edit
+              </Button>
+            )}
 
-        </div>
+            <Button
+              variant="destructive"
+              onClick={() =>
+                deleteTask(item.id)
+              }
+            >
+              <Trash2
+                size={16}
+                className="mr-2"
+              />
+              Delete
+            </Button>
 
-      </CardContent>
-    </Card>
+          </div>
+
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 

@@ -11,6 +11,8 @@ import {
   Clock3,
 } from "lucide-react";
 
+import { motion } from "framer-motion";
+
 function Dashboard({ total, completed, pending }) {
   const stats = [
     {
@@ -38,33 +40,44 @@ function Dashboard({ total, completed, pending }) {
 
   return (
     <section className="mb-8 grid gap-5 md:grid-cols-3">
-      {stats.map((item) => {
+      {stats.map((item, index) => {
         const Icon = item.icon;
 
         return (
-          <Card
+          <motion.div
             key={item.title}
-            className="transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: index * 0.1,
+              duration: 0.4,
+            }}
+            whileHover={{
+              y: -5,
+              scale: 1.02,
+            }}
           >
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>{item.title}</CardTitle>
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle>{item.title}</CardTitle>
 
-                <div className={`rounded-xl p-3 ${item.bg}`}>
-                  <Icon
-                    size={24}
-                    className={item.color}
-                  />
+                  <div className={`rounded-xl p-3 ${item.bg}`}>
+                    <Icon
+                      size={24}
+                      className={item.color}
+                    />
+                  </div>
                 </div>
-              </div>
-            </CardHeader>
+              </CardHeader>
 
-            <CardContent>
-              <p className="text-4xl font-bold">
-                {item.value}
-              </p>
-            </CardContent>
-          </Card>
+              <CardContent>
+                <p className="text-4xl font-bold">
+                  {item.value}
+                </p>
+              </CardContent>
+            </Card>
+          </motion.div>
         );
       })}
     </section>
