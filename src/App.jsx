@@ -1,74 +1,127 @@
 import { useState } from "react";
-import Header from "./components/Header";
-import TaskForm from "./components/TaskForm";
-import TaskList from "./components/TaskList";
-import SearchBar from "./components/SearchBar";
-import ProgressBar from "./components/ProgressBar";
+import { v4 as uuidv4 } from "uuid";
+
+import Header from "./components/layout/Header";
+import Dashboard from "./components/layout/Dashboard";
+
+import TaskForm from "./components/task/TaskForm";
+import TaskList from "./components/task/TaskList";
+
+import SearchBar from "./components/search/SearchBar";
+import ProgressBar from "./components/progress/ProgressBar";
+
 import useLocalStorage from "./hooks/useLocalStorage";
 
 function App() {
-  const [task, setTask] = useState("");
+  // Form State
+  const [taskData, setTaskData] = useState({
+    text: "",
+    priority: "Medium",
+    category: "Personal",
+    dueDate: "",
+  });
 
-  // Tasks are now stored in localStorage
-  const [tasks, setTasks] = useLocalStorage("tasks", []);
-
+  // Search
   const [search, setSearch] = useState("");
 
+  // Tasks
+  const [tasks, setTasks] = useLocalStorage("tasks", []);
+
+  // -----------------------------
   // Add Task
+  // -----------------------------
   const addTask = () => {
-    if (task.trim() === "") return;
+    if (taskData.text.trim() === "") return;
 
     const newTask = {
-      id: Date.now(),
-      text: task,
+      id: uuidv4(),
+      text: taskData.text,
+      priority: taskData.priority,
+      category: taskData.category,
+      dueDate: taskData.dueDate,
       completed: false,
+      createdAt: new Date().toISOString(),
     };
 
-    setTasks([...tasks, newTask]);
-    setTask("");
+    setTasks((prev) => [...prev, newTask]);
+
+    setTaskData({
+      text: "",
+      priority: "Medium",
+      category: "Personal",
+      dueDate: "",
+    });
   };
 
+  // -----------------------------
+  // Delete Task
+  // -----------------------------
+  const deleteTask = (id) => {
+    setTasks((prev) =>
+      prev.filter((task) => task.id !== id)
+    );
+  };
+
+  // -----------------------------
   // Toggle Complete
+  // -----------------------------
   const toggleComplete = (id) => {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === id
-          ? { ...task, completed: !task.completed }
+          ? {
+              ...task,
+              completed: !task.completed,
+            }
           : task
       )
     );
   };
 
-  // Delete Task
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
+  // -----------------------------
+  // Edit Task
+  // -----------------------------
+  const editTask = (id, updatedTask) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id
+          ? { ...task, ...updatedTask }
+          : task
+      )
+    );
   };
 
-  // Progress
+  // -----------------------------
+  // Search
+  // -----------------------------
+  const filteredTasks = tasks.filter((task) =>
+    task.text.toLowerCase().includes(search.toLowerCase())
+  );
+
+  // -----------------------------
+  // Dashboard Stats
+  // -----------------------------
+  const totalTasks = tasks.length;
   const completedTasks = tasks.filter(
     (task) => task.completed
   ).length;
+  const pendingTasks = totalTasks - completedTasks;
 
   const progress =
-    tasks.length === 0
+    totalTasks === 0
       ? 0
-      : Math.round((completedTasks / tasks.length) * 100);
-
-  // Search
-  const filteredTasks = tasks.filter((item) =>
-    item.text.toLowerCase().includes(search.toLowerCase())
-  );
+      : Math.round((completedTasks / totalTasks) * 100);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      <div className="max-w-3xl mx-auto px-6 py-10">
+    <div className="min-h-screen bg-slate-950 text-white">
+      <div className="max-w-6xl mx-auto px-6 py-10">
 
         <Header />
 
-        <TaskForm
-          task={task}
-          setTask={setTask}
-          addTask={addTask}
+        <Dashboard
+          total={totalTasks}
+          completed={completedTasks}
+          pending={pendingTasks}
         />
 
         <SearchBar
@@ -76,28 +129,20 @@ function App() {
           setSearch={setSearch}
         />
 
-        {/* Filter */}
-        <div className="mt-4 flex justify-between items-center">
-          <select className="bg-slate-800 px-4 py-2 rounded-lg">
-            <option>All Tasks</option>
-            <option>Completed</option>
-            <option>Pending</option>
-          </select>
-
-          <span className="text-gray-400">
-            {tasks.length} Tasks
-          </span>
-        </div>
+        <TaskForm
+          taskData={taskData}
+          setTaskData={setTaskData}
+          addTask={addTask}
+        />
 
         <ProgressBar progress={progress} />
 
-        <div className="mt-8">
-          <TaskList
-            tasks={filteredTasks}
-            toggleComplete={toggleComplete}
-            deleteTask={deleteTask}
-          />
-        </div>
+        <TaskList
+          tasks={filteredTasks}
+          toggleComplete={toggleComplete}
+          deleteTask={deleteTask}
+          editTask={editTask}
+        />
 
       </div>
     </div>
