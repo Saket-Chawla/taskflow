@@ -1,134 +1,58 @@
-# 🚀 TaskFlow
+# TaskFlow - Modern Task Management Application
 
-A modern and responsive task management application built with **React**, **Vite**, **Tailwind CSS**, and **shadcn/ui**.
+TaskFlow is a modern, interactive task management web application built to streamline productivity. It features a responsive UI with smooth animations, local storage persistence, and a productivity-tracking dashboard.
 
-TaskFlow helps users organize their daily tasks with an intuitive interface, dark mode support, task progress tracking, and local data persistence.
-
----
-
-## 📸 Preview
-
-> Add screenshots of your application here after deployment.
-
-| Light Mode         | Dark Mode          |
-| ------------------ | ------------------ |
-| *(Add Screenshot)* | *(Add Screenshot)* |
-
----
-
-## ✨ Features
-
-* ✅ Create, edit, and delete tasks
-* ✅ Mark tasks as completed
-* ✅ Search tasks instantly
-* ✅ Task progress tracking
-* ✅ Dashboard with task statistics
-* ✅ Task priorities
-* ✅ Task categories
-* ✅ Due dates
-* ✅ Dark / Light mode
-* ✅ Local Storage support
-* ✅ Responsive design
-* ✅ Smooth animations using Framer Motion
+🚀 **Live Demo:** [taskflow-pink-six.vercel.app](https://taskflow-pink-six.vercel.app)
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
+*   **Frontend Library:** React.js (Vite)
+*   **Styling & UI:** Tailwind CSS, shadcn/ui
+*   **Animations:** Framer Motion
+*   **State Persistence:** LocalStorage
+*   **Icons:** Lucide React
 
-* React
-* Vite
-* Tailwind CSS
-* shadcn/ui
-* Framer Motion
-* Lucide React
-* date-fns
+---
 
-### State Management
+## ✨ Key Features
 
-* React Hooks
-* Custom Hooks
-
-### Storage
-
-* Local Storage
+*   **Interactive Task Board:** Seamless CRUD (Create, Read, Update, Delete) operations for tasks.
+*   **Search & Filters:** Instant real-time task search and filtering by completion status.
+*   **Productivity Dashboard:** A progress-tracking overview showing completed vs. pending tasks.
+*   **Rich User Experience:** Smooth micro-animations for transitions and status updates.
+*   **Responsive Styling:** Optimized for mobile, tablet, and desktop screens with built-in dark/light mode.
 
 ---
 
 ## 📂 Project Structure
 
 ```text
-src/
-├── components/
-│   ├── layout/
-│   ├── progress/
-│   ├── search/
-│   ├── task/
-│   └── ui/
-├── hooks/
-├── providers/
-├── lib/
-├── App.jsx
-└── main.jsx
+taskflow/
+├── src/
+│   ├── components/  # Reusable UI components (buttons, cards, dashboard)
+│   ├── context/     # State management context
+│   ├── App.jsx      # Main Application logic
+│   └── index.css    # Tailwind CSS config
+├── package.json
+└── vite.config.js
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 How to Run Locally
 
-### Clone the repository
-
-```bash
-git clone https://github.com/Saket-Chawla/taskflow.git
-```
-
-### Navigate into the project
-
-```bash
-cd taskflow
-```
-
-### Install dependencies
-
-```bash
-npm install
-```
-
-### Start the development server
-
-```bash
-npm run dev
-```
-
-### Build for production
-
-```bash
-npm run build
-```
-
----
-
-## 🎯 Future Improvements
-
-* Drag & Drop task management
-* Task filtering and sorting
-* Cloud synchronization
-* User authentication
-* Notifications and reminders
-
----
-
-## 👨‍💻 Author
-
-**Saket Chawla**
-
-GitHub: https://github.com/Saket-Chawla
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-Feel free to fork, modify, and use this project for learning purposes.
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/Saket-Chawla/taskflow.git
+    cd taskflow
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
